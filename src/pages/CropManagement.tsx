@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import axios from "axios";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface Crop {
   id: number;
@@ -16,21 +16,21 @@ const CropManagement = () => {
   const [crops, setCrops] = useState<Crop[]>([]);
   const [filteredCrops, setFilteredCrops] = useState<Crop[]>([]);
   const [loading, setLoading] = useState(true);
-  const [seasonFilter, setSeasonFilter] = useState<string>('All');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [seasonFilter, setSeasonFilter] = useState<string>("All");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchCrops = async () => {
       try {
         const response = await axios.get(
-          'http://localhost/agrizen/backend/adminController/cropController.php'
+          "https://agrigenapi.sarangartstudio.com/adminController/cropController.php"
         );
         if (response.data.status === 200) {
           setCrops(response.data.data);
           setFilteredCrops(response.data.data);
         }
       } catch (error) {
-        console.error('Failed to fetch crops', error);
+        console.error("Failed to fetch crops", error);
       } finally {
         setLoading(false);
       }
@@ -43,14 +43,15 @@ const CropManagement = () => {
     let filtered = [...crops];
 
     // Filter by season
-    if (seasonFilter !== 'All') {
-      filtered = filtered.filter((crop) =>
-        crop.season.trim().toLowerCase() === seasonFilter.trim().toLowerCase()
+    if (seasonFilter !== "All") {
+      filtered = filtered.filter(
+        (crop) =>
+          crop.season.trim().toLowerCase() === seasonFilter.trim().toLowerCase()
       );
     }
 
     // Filter by search term
-    if (searchTerm.trim() !== '') {
+    if (searchTerm.trim() !== "") {
       filtered = filtered.filter(
         (crop) =>
           crop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,8 +93,12 @@ const CropManagement = () => {
           className="border border-gray-300 px-4 py-2 rounded-md"
         >
           <option value="All">All Seasons</option>
-          <option value="Winter Season (Oct–March)">Winter Season (Oct–March)</option>
-          <option value="Monsoon Season (June–Oct)">Monsoon Season (June–Oct)</option>
+          <option value="Winter Season (Oct–March)">
+            Winter Season (Oct–March)
+          </option>
+          <option value="Monsoon Season (June–Oct)">
+            Monsoon Season (June–Oct)
+          </option>
           <option value="Grown all year (long-duration crop)">
             Grown all year (long-duration crop)
           </option>
@@ -112,13 +117,17 @@ const CropManagement = () => {
               className="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300"
             >
               <img
-                src={`http://localhost/agrizen/backend/uploads/crops/${crop.image}`}
+                src={`https://agrigenapi.sarangartstudio.com/uploads/crops/${crop.image}`}
                 alt={crop.name}
                 className="h-48 w-full object-cover"
               />
               <div className="p-5">
-                <h2 className="text-2xl font-semibold text-green-700 mb-1">{crop.name}</h2>
-                <p className="text-gray-600 text-sm italic mb-2">{crop.variety}</p>
+                <h2 className="text-2xl font-semibold text-green-700 mb-1">
+                  {crop.name}
+                </h2>
+                <p className="text-gray-600 text-sm italic mb-2">
+                  {crop.variety}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-2 text-sm text-gray-500">
                   <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">
                     {crop.season}
@@ -127,7 +136,9 @@ const CropManagement = () => {
                     {crop.duration_days} days
                   </span>
                 </div>
-                <p className="text-gray-600 text-sm line-clamp-3">{crop.description}</p>
+                <p className="text-gray-600 text-sm line-clamp-3">
+                  {crop.description}
+                </p>
               </div>
             </motion.div>
           ))}

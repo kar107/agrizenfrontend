@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Category {
   id: number;
@@ -23,7 +23,8 @@ const CategoryManagement: React.FC = () => {
   });
 
   const [editing, setEditing] = useState(false);
-  const API_URL = "http://localhost/agrizen/backend/adminController/categoryController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/categoryController.php";
 
   useEffect(() => {
     fetchCategories();
@@ -40,11 +41,17 @@ const CategoryManagement: React.FC = () => {
       const response = await axios.get(API_URL);
       setCategories(response.data.data || []);
     } catch (error) {
-      Swal.fire("Error", "Failed to fetch categories. Please check API connection.", "error");
+      Swal.fire(
+        "Error",
+        "Failed to fetch categories. Please check API connection.",
+        "error"
+      );
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -69,15 +76,24 @@ const CategoryManagement: React.FC = () => {
           id: null,
           name: "",
           description: "",
-          user_id: JSON.parse(localStorage.getItem("user") || "{}")?.userid || null,
+          user_id:
+            JSON.parse(localStorage.getItem("user") || "{}")?.userid || null,
           status: "active",
         });
-        Swal.fire("Success", `Category ${editing ? "updated" : "added"} successfully!`, "success");
+        Swal.fire(
+          "Success",
+          `Category ${editing ? "updated" : "added"} successfully!`,
+          "success"
+        );
       } else {
         Swal.fire("Error", response.data.message, "error");
       }
     } catch (error) {
-      Swal.fire("Error", "Error processing request. Please try again.", "error");
+      Swal.fire(
+        "Error",
+        "Error processing request. Please try again.",
+        "error"
+      );
     }
   };
 
@@ -143,7 +159,10 @@ const CategoryManagement: React.FC = () => {
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded mt-3">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded mt-3"
+          >
             {editing ? "Update" : "Add"} Category
           </button>
         </form>
@@ -168,8 +187,18 @@ const CategoryManagement: React.FC = () => {
                   <td className="border p-2">{category.description}</td>
                   <td className="border p-2">{category.status}</td>
                   <td className="border p-2">
-                    <button onClick={() => handleEdit(category)} className="bg-yellow-500 text-white px-2 py-1 rounded mr-2">Edit</button>
-                    <button onClick={() => handleDelete(category.id)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                    <button
+                      onClick={() => handleEdit(category)}
+                      className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(category.id)}
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -51,7 +51,7 @@ const AdminDashboard = () => {
 
     // Fetch Dashboard Stats
     fetch(
-      "http://localhost/agrizen/backend/adminController/adminController.php"
+      "https://agrigenapi.sarangartstudio.com/adminController/adminController.php"
     ) // Replace with your actual API endpoint
       .then(async (res) => {
         const text = await res.text();

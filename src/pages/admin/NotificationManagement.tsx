@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Notification {
   notification_id: number;
@@ -14,7 +14,8 @@ interface Notification {
 const NotificationManagement: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const API_URL = "http://localhost/agrizen/backend/adminController/notificationController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/notificationController.php";
 
   useEffect(() => {
     fetchNotifications();
@@ -26,7 +27,9 @@ const NotificationManagement: React.FC = () => {
       console.log(response.data); // Check the response data in console
 
       // Ensure the response is an array
-      const notificationsData = Array.isArray(response.data) ? response.data : [];
+      const notificationsData = Array.isArray(response.data)
+        ? response.data
+        : [];
       setNotifications(notificationsData);
     } catch (error) {
       Swal.fire("Error", "Failed to fetch notifications.", "error");
@@ -41,7 +44,7 @@ const NotificationManagement: React.FC = () => {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (confirm.isConfirmed) {
@@ -61,7 +64,7 @@ const NotificationManagement: React.FC = () => {
     try {
       await axios.put(API_URL, {
         notification_id: id,
-        is_read: newIsRead
+        is_read: newIsRead,
       });
       Swal.fire("Success", "Notification status updated.", "success");
       fetchNotifications();
@@ -94,21 +97,36 @@ const NotificationManagement: React.FC = () => {
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
                   <tr key={notification.notification_id}>
-                    <td className="border p-2">{notification.notification_id}</td>
+                    <td className="border p-2">
+                      {notification.notification_id}
+                    </td>
                     <td className="border p-2">{notification.name}</td>
                     <td className="border p-2">{notification.message}</td>
                     <td className="border p-2">{notification.created_at}</td>
                     <td className="border p-2">
                       <button
-                        onClick={() => handleMarkAsRead(notification.notification_id, notification.is_read)}
-                        className={`px-2 py-1 rounded ${notification.is_read === 1 ? 'bg-green-500' : 'bg-gray-500'} text-white`}
+                        onClick={() =>
+                          handleMarkAsRead(
+                            notification.notification_id,
+                            notification.is_read
+                          )
+                        }
+                        className={`px-2 py-1 rounded ${
+                          notification.is_read === 1
+                            ? "bg-green-500"
+                            : "bg-gray-500"
+                        } text-white`}
                       >
-                        {notification.is_read === 1 ? "Mark as Unread" : "Mark as Read"}
+                        {notification.is_read === 1
+                          ? "Mark as Unread"
+                          : "Mark as Read"}
                       </button>
                     </td>
                     <td className="border p-2">
                       <button
-                        onClick={() => handleDelete(notification.notification_id)}
+                        onClick={() =>
+                          handleDelete(notification.notification_id)
+                        }
                         className="bg-red-500 text-white px-2 py-1 rounded"
                       >
                         Delete
@@ -118,7 +136,10 @@ const NotificationManagement: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="border p-2 text-center text-gray-500">
+                  <td
+                    colSpan={6}
+                    className="border p-2 text-center text-gray-500"
+                  >
                     No notifications available
                   </td>
                 </tr>

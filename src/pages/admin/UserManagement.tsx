@@ -23,7 +23,8 @@ const UserManagement: React.FC = () => {
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost/agrizen/backend/adminController/usermanageController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/usermanageController.php";
 
   useEffect(() => {
     fetchUsers();
@@ -44,7 +45,9 @@ const UserManagement: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -71,7 +74,13 @@ const UserManagement: React.FC = () => {
 
       fetchUsers();
       setEditing(false);
-      setFormData({ id: null, name: "", email: "", password: "", role: "farmer" });
+      setFormData({
+        id: null,
+        name: "",
+        email: "",
+        password: "",
+        role: "farmer",
+      });
     } catch (error) {
       Swal.fire("Error", "Something went wrong. Please try again.", "error");
       setError("Error processing request");
@@ -144,12 +153,20 @@ const UserManagement: React.FC = () => {
                 required
               />
             )}
-            <select name="role" value={formData.role} onChange={handleInputChange} className="border p-2 rounded">
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleInputChange}
+              className="border p-2 rounded"
+            >
               <option value="farmer">Farmer</option>
               <option value="supplier">Supplier</option>
             </select>
           </div>
-          <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded mt-3">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded mt-3"
+          >
             {editing ? "Update" : "Add"} User
           </button>
         </form>

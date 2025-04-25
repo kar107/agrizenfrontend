@@ -51,7 +51,7 @@ const CropProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [crops, setCrops] = useState<Crop[]>([]);
   const API_URL =
-    "http://localhost/agrizen/backend/adminController/cropController.php";
+    "https://agrigenapi.sarangartstudio.com/adminController/cropController.php";
 
   const fetchCrops = async () => {
     try {
@@ -93,7 +93,7 @@ const Crops: React.FC = () => {
   const [search, setSearch] = useState("");
   const itemsPerPage = 5;
   const API_URL =
-    "http://localhost/agrizen/backend/adminController/cropController.php";
+    "https://agrigenapi.sarangartstudio.com/adminController/cropController.php";
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -334,7 +334,7 @@ const Crops: React.FC = () => {
                 <div className="mt-2">
                   <p className="text-sm text-gray-600">Current Image:</p>
                   <img
-                    src={`http://localhost/agrizen/backend/uploads/crops/${formData.existingImage}`}
+                    src={`https://agrigenapi.sarangartstudio.com/uploads/crops/${formData.existingImage}`}
                     alt="Crop"
                     className="h-20 w-20 object-cover mt-1"
                   />
@@ -396,7 +396,7 @@ const Crops: React.FC = () => {
                   <td className="border p-2">
                     {crop.image ? (
                       <img
-                        src={`http://localhost/agrizen/backend/uploads/crops/${crop.image}`}
+                        src={`https://agrigenapi.sarangartstudio.com/uploads/crops/${crop.image}`}
                         alt={crop.name}
                         className="w-12 h-12 object-cover rounded"
                       />

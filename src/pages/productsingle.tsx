@@ -10,7 +10,9 @@ const ProductSingle = () => {
   const [quantity, setQuantity] = useState<number>(1); // 👈 Quantity state
 
   useEffect(() => {
-    fetch(`http://localhost/agrizen/backend/adminController/productdetailsController.php?id=${id}`)
+    fetch(
+      `https://agrigenapi.sarangartstudio.com/adminController/productdetailsController.php?id=${id}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 200) {
@@ -56,11 +58,14 @@ const ProductSingle = () => {
       price: product.price,
     };
 
-    fetch("http://localhost/agrizen/backend/adminController/cartController.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cartItem),
-    })
+    fetch(
+      "https://agrigenapi.sarangartstudio.com/adminController/cartController.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cartItem),
+      }
+    )
       .then((response) => response.text())
       .then((text) => {
         return JSON.parse(text);
@@ -109,7 +114,7 @@ const ProductSingle = () => {
           transition={{ duration: 0.5 }}
         >
           <img
-            src={`http://localhost/agrizen/backend/uploads/products/${product.image}`}
+            src={`https://agrigenapi.sarangartstudio.com/uploads/products/${product.image}`}
             alt={product.name}
             className="w-full h-[400px] object-cover rounded-lg shadow-md"
           />
@@ -122,11 +127,17 @@ const ProductSingle = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex flex-col justify-center"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-          <p className="text-lg text-gray-600 leading-relaxed">{product.description}</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {product.name}
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed">
+            {product.description}
+          </p>
 
           <div className="mt-6 flex items-center">
-            <span className="text-3xl font-bold text-green-600">${product.price}</span>
+            <span className="text-3xl font-bold text-green-600">
+              ${product.price}
+            </span>
           </div>
 
           {/* Quantity Selector */}

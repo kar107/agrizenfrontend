@@ -10,7 +10,9 @@ const Marketplace = () => {
   const [categories, setCategories] = useState(["All"]);
 
   useEffect(() => {
-    fetch("http://localhost/agrizen/backend/adminController/categoryController.php")
+    fetch(
+      "https://agrigenapi.sarangartstudio.com/adminController/categoryController.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 200) {
@@ -23,7 +25,9 @@ const Marketplace = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost/agrizen/backend/adminController/marketplaceController.php")
+    fetch(
+      "https://agrigenapi.sarangartstudio.com/adminController/marketplaceController.php"
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 200) {
@@ -57,10 +61,19 @@ const Marketplace = () => {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">
           <div className="text-white">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl font-bold mb-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-4xl font-bold mb-4"
+            >
               Agricultural Marketplace
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl"
+            >
               Find everything you need for your farm
             </motion.p>
           </div>
@@ -115,21 +128,32 @@ const Marketplace = () => {
 const ProductCard = ({ product }) => {
   return (
     <Link to={`/productsingle/${product.id}`}>
-      <motion.div whileHover={{ y: -5 }} className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <motion.div
+        whileHover={{ y: -5 }}
+        className="bg-white rounded-lg shadow-lg overflow-hidden"
+      >
         <div className="h-48 relative">
-          <img src={`http://localhost/agrizen/backend/uploads/products/${product.image}`} alt={product.name} className="w-full h-full object-cover" />
+          <img
+            src={`https://agrigenapi.sarangartstudio.com/uploads/products/${product.image}`}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-500">{product.category}</span>
             <div className="flex items-center">
               <Star className="h-4 w-4 text-yellow-400 fill-current" />
-              <span className="ml-1 text-sm text-gray-600">{product.rating}</span>
+              <span className="ml-1 text-sm text-gray-600">
+                {product.rating}
+              </span>
             </div>
           </div>
           <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-green-600">${product.price}</span>
+            <span className="text-2xl font-bold text-green-600">
+              ${product.price}
+            </span>
             <button className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700 transition">
               <ShoppingCart className="h-5 w-5" />
               <span>Add to Cart</span>

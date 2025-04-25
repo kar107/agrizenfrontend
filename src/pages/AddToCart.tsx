@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AddToCart = () => {
   const [cart, setCart] = useState([]);
@@ -19,15 +19,17 @@ const AddToCart = () => {
       return;
     }
 
-    fetch(`http://localhost/agrizen/backend/adminController/cartController.php?user_id=${userId}`)
+    fetch(
+      `https://agrigenapi.sarangartstudio.com/adminController/cartController.php?user_id=${userId}`
+    )
       .then(async (res) => {
         const text = await res.text();
         if (!res.ok) throw new Error(`Server Error: ${res.status} - ${text}`);
         return JSON.parse(text);
       })
       .then((data) => {
-        localStorage.setItem("Cart_data",JSON.stringify(data));
-        localStorage.setItem("Cart_count",data.data.length);
+        localStorage.setItem("Cart_data", JSON.stringify(data));
+        localStorage.setItem("Cart_count", data.data.length);
         if (data.status === 200 && data.data) {
           setCart(data.data);
         }
@@ -40,9 +42,12 @@ const AddToCart = () => {
   }, []);
 
   const removeFromCart = (cartId: number) => {
-    fetch(`http://localhost/agrizen/backend/adminController/cartController.php?cart_id=${cartId}`, {
-      method: "DELETE",
-    })
+    fetch(
+      `https://agrigenapi.sarangartstudio.com/adminController/cartController.php?cart_id=${cartId}`,
+      {
+        method: "DELETE",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log("Delete response:", data);
@@ -57,7 +62,9 @@ const AddToCart = () => {
 
   if (loading) {
     return (
-      <div className="text-center mt-12 text-gray-600 text-lg">Loading your cart...</div>
+      <div className="text-center mt-12 text-gray-600 text-lg">
+        Loading your cart...
+      </div>
     );
   }
 
@@ -65,7 +72,9 @@ const AddToCart = () => {
     <div className="max-w-7xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Shopping Cart</h1>
       {cart.length === 0 ? (
-        <div className="text-center text-lg text-gray-600">Your cart is empty.</div>
+        <div className="text-center text-lg text-gray-600">
+          Your cart is empty.
+        </div>
       ) : (
         <motion.div
           initial={{ opacity: 0 }}
@@ -80,14 +89,18 @@ const AddToCart = () => {
             >
               <div className="flex items-center space-x-4">
                 <img
-                  src={`http://localhost/agrizen/backend/uploads/products/${item.image}`}
+                  src={`https://agrigenapi.sarangartstudio.com/uploads/products/${item.image}`}
                   alt={item.name}
                   className="w-20 h-20 object-cover rounded-md"
                 />
                 <div>
                   <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-gray-600">${item.price} x {item.quantity}</p>
-                  <p className="text-gray-700 font-semibold">Total: ${item.total}</p>
+                  <p className="text-gray-600">
+                    ${item.price} x {item.quantity}
+                  </p>
+                  <p className="text-gray-700 font-semibold">
+                    Total: ${item.total}
+                  </p>
                 </div>
               </div>
               <button

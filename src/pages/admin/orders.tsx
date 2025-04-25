@@ -19,7 +19,7 @@ const AdminOrders: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
   const API_URL =
-    "http://localhost/agrizen/backend/adminController/adminordersController.php";
+    "https://agrigenapi.sarangartstudio.com/adminController/adminordersController.php";
 
   useEffect(() => {
     fetchOrders();

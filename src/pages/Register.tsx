@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Lock, Mail, Sprout } from "lucide-react";
-import React, { useState,useEffect } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-useEffect(() => {
+  useEffect(() => {
     const userData = localStorage.getItem("user");
 
     if (userData) {
@@ -48,7 +48,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        "http://localhost/agrizen/backend/adminController/registerController.php",
+        "https://agrigenapi.sarangartstudio.com/adminController/registerController.php",
         {
           method: "POST",
           body: payload,
@@ -59,10 +59,10 @@ useEffect(() => {
 
       if (data.status === "200") {
         alert("Registration successful!");
-        navigate("/login"); 
+        navigate("/login");
       } else {
         alert(data.message);
-      } 
+      }
     } catch (error) {
       console.error("Error:", error);
       alert("Something went wrong!");

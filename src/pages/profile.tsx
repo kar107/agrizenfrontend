@@ -1,10 +1,18 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { User, Key, Edit } from "lucide-react";
+import { Edit, Key, User } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const UserProfile = () => {
-  const [user, setUser] = useState({ userid: "", name: "", email: "", role: "" });
-  const [passwordData, setPasswordData] = useState({ newPassword: "", confirmPassword: "" });
+  const [user, setUser] = useState({
+    userid: "",
+    name: "",
+    email: "",
+    role: "",
+  });
+  const [passwordData, setPasswordData] = useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
@@ -22,11 +30,18 @@ const UserProfile = () => {
 
   const handleProfileUpdate = async () => {
     try {
-      const response = await fetch("http://localhost/agrizen/backend/adminController/profileController.php", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userid: user.userid, name: user.name, email: user.email }),
-      });
+      const response = await fetch(
+        "https://agrigenapi.sarangartstudio.com/adminController/profileController.php",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userid: user.userid,
+            name: user.name,
+            email: user.email,
+          }),
+        }
+      );
 
       const data = await response.json();
       setMessage(data.message);
@@ -49,11 +64,17 @@ const UserProfile = () => {
     }
 
     try {
-      const response = await fetch("http://localhost/agrizen/backend/adminController/profileController.php", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userid: user.userid, password: passwordData.newPassword }),
-      });
+      const response = await fetch(
+        "https://agrigenapi.sarangartstudio.com/adminController/profileController.php",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userid: user.userid,
+            password: passwordData.newPassword,
+          }),
+        }
+      );
 
       const data = await response.json();
       setMessage(data.message);
@@ -101,9 +122,15 @@ const UserProfile = () => {
           </>
         ) : (
           <>
-            <p className="text-gray-700"><strong>Name:</strong> {user.name}</p>
-            <p className="text-gray-700"><strong>Email:</strong> {user.email}</p>
-            <p className="text-gray-700"><strong>Role:</strong> {user.role}</p>
+            <p className="text-gray-700">
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p className="text-gray-700">
+              <strong>Email:</strong> {user.email}
+            </p>
+            <p className="text-gray-700">
+              <strong>Role:</strong> {user.role}
+            </p>
             <button
               className="mt-5 bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg w-full transition-all"
               onClick={() => setIsEditing(true)}
@@ -113,7 +140,9 @@ const UserProfile = () => {
           </>
         )}
 
-        <h3 className="mt-6 text-xl font-semibold text-gray-700">Change Password</h3>
+        <h3 className="mt-6 text-xl font-semibold text-gray-700">
+          Change Password
+        </h3>
         {isChangingPassword ? (
           <>
             <input
@@ -121,14 +150,24 @@ const UserProfile = () => {
               placeholder="New Password"
               className="border border-gray-300 rounded-lg p-3 w-full mt-3 focus:outline-none focus:ring-2 focus:ring-green-400"
               value={passwordData.newPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  newPassword: e.target.value,
+                })
+              }
             />
             <input
               type="password"
               placeholder="Confirm Password"
               className="border border-gray-300 rounded-lg p-3 w-full mt-3 focus:outline-none focus:ring-2 focus:ring-green-400"
               value={passwordData.confirmPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  confirmPassword: e.target.value,
+                })
+              }
             />
             <button
               className="mt-5 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg w-full transition-all"
@@ -146,7 +185,9 @@ const UserProfile = () => {
           </button>
         )}
 
-        {message && <p className="mt-3 text-center text-red-500 font-medium">{message}</p>}
+        {message && (
+          <p className="mt-3 text-center text-red-500 font-medium">{message}</p>
+        )}
       </motion.div>
     </div>
   );

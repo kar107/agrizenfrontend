@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Order {
   order_id: number;
@@ -24,7 +24,7 @@ const SupplierOrders: React.FC = () => {
   const userId = user?.user_id;
 
   const API_URL =
-    "http://localhost/agrizen/backend/adminController/adminordersController.php";
+    "https://agrigenapi.sarangartstudio.com/adminController/adminordersController.php";
 
   useEffect(() => {
     if (userId) {
@@ -58,7 +58,11 @@ const SupplierOrders: React.FC = () => {
       });
 
       if (response.data.status === 200) {
-        Swal.fire("Updated!", `${field.replace("_", " ")} updated successfully.`, "success");
+        Swal.fire(
+          "Updated!",
+          `${field.replace("_", " ")} updated successfully.`,
+          "success"
+        );
         fetchOrders();
       } else {
         throw new Error(response.data.message);
@@ -138,7 +142,11 @@ const SupplierOrders: React.FC = () => {
                       <select
                         value={order.order_status}
                         onChange={(e) =>
-                          updateStatus(order.order_id, "order_status", e.target.value)
+                          updateStatus(
+                            order.order_id,
+                            "order_status",
+                            e.target.value
+                          )
                         }
                         className="border rounded px-2 py-1"
                       >
@@ -153,7 +161,11 @@ const SupplierOrders: React.FC = () => {
                       <select
                         value={order.payment_status}
                         onChange={(e) =>
-                          updateStatus(order.order_id, "payment_status", e.target.value)
+                          updateStatus(
+                            order.order_id,
+                            "payment_status",
+                            e.target.value
+                          )
                         }
                         className="border rounded px-2 py-1"
                       >

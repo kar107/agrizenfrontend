@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Category {
   id: number;
@@ -26,7 +26,8 @@ const CategoryManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const categoriesPerPage = 5;
 
-  const API_URL = "http://localhost/agrizen/backend/adminController/categoryController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/categoryController.php";
 
   useEffect(() => {
     fetchCategories();
@@ -39,14 +40,16 @@ const CategoryManagement: React.FC = () => {
     } catch (error) {
       console.error("Error fetching categories", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch categories. Please check API connection.',
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch categories. Please check API connection.",
       });
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -73,9 +76,11 @@ const CategoryManagement: React.FC = () => {
 
       if (response.data.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: editing ? 'Category updated successfully!' : 'Category added successfully!',
+          icon: "success",
+          title: "Success",
+          text: editing
+            ? "Category updated successfully!"
+            : "Category added successfully!",
         });
         fetchCategories();
         setEditing(false);
@@ -88,17 +93,17 @@ const CategoryManagement: React.FC = () => {
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: response.data.message || 'Something went wrong!',
+          icon: "error",
+          title: "Error",
+          text: response.data.message || "Something went wrong!",
         });
       }
     } catch (error) {
       console.error("Error processing request:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error processing request. Please try again.',
+        icon: "error",
+        title: "Error",
+        text: "Error processing request. Please try again.",
       });
     }
   };
@@ -106,31 +111,31 @@ const CategoryManagement: React.FC = () => {
   const handleEdit = (category: Category) => {
     setFormData({ ...category });
     setEditing(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (result.isConfirmed) {
       try {
         await axios.delete(`${API_URL}?id=${id}`);
-        Swal.fire('Deleted!', 'Category has been deleted.', 'success');
+        Swal.fire("Deleted!", "Category has been deleted.", "success");
         fetchCategories();
       } catch (error) {
         console.error("Error deleting category", error);
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to delete category',
+          icon: "error",
+          title: "Error",
+          text: "Failed to delete category",
         });
       }
     }
@@ -139,7 +144,10 @@ const CategoryManagement: React.FC = () => {
   // Pagination Logic
   const indexOfLastCategory = currentPage * categoriesPerPage;
   const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
-  const currentCategories = categories.slice(indexOfFirstCategory, indexOfLastCategory);
+  const currentCategories = categories.slice(
+    indexOfFirstCategory,
+    indexOfLastCategory
+  );
   const totalPages = Math.ceil(categories.length / categoriesPerPage);
 
   return (
@@ -207,11 +215,13 @@ const CategoryManagement: React.FC = () => {
                   <td className="border p-2">{category.name}</td>
                   <td className="border p-2">{category.description}</td>
                   <td className="border p-2">
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      category.status === "active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        category.status === "active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
                       {category.status}
                     </span>
                   </td>

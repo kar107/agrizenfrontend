@@ -1,17 +1,17 @@
+import {
+  CardElement,
+  Elements,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  loadStripe
-} from "@stripe/stripe-js";
-import {
-  Elements,
-  useStripe,
-  useElements,
-  CardElement
-} from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe("pk_test_51RBvTeECSsdmHHbj0L5fJ4YrWB5kSZ89DJt4shxeDpSp1jsPk0wNqHGzPdLlbErAVIM4ofjhKjx2vNeOmC2IVZrQ00EDfpIWqS"); // Replace with your Stripe public key
+const stripePromise = loadStripe(
+  "pk_test_51RBvTeECSsdmHHbj0L5fJ4YrWB5kSZ89DJt4shxeDpSp1jsPk0wNqHGzPdLlbErAVIM4ofjhKjx2vNeOmC2IVZrQ00EDfpIWqS"
+); // Replace with your Stripe public key
 
 const CheckoutForm = ({
   totalAmount,
@@ -19,7 +19,7 @@ const CheckoutForm = ({
   addresses,
   selectedAddressIndex,
   cart,
-  onSuccess
+  onSuccess,
 }: any) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -47,7 +47,7 @@ const CheckoutForm = ({
 
     try {
       const res = await fetch(
-        "http://localhost/agrizen/backend/adminController/orderController.php",
+        "https://agrigenapi.sarangartstudio.com/adminController/orderController.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -193,7 +193,7 @@ const Checkout = () => {
 
     try {
       const res = await fetch(
-        "http://localhost/agrizen/backend/adminController/orderController.php",
+        "https://agrigenapi.sarangartstudio.com/adminController/orderController.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -300,21 +300,23 @@ const Checkout = () => {
 
         {/* Add New Address */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-          {["fullName", "phone", "street", "city", "state", "zip"].map((field) => (
-            <input
-              key={field}
-              type="text"
-              placeholder={field}
-              className="border p-2 rounded"
-              value={newAddress[field as keyof typeof newAddress]}
-              onChange={(e) =>
-                setNewAddress({
-                  ...newAddress,
-                  [field]: e.target.value,
-                })
-              }
-            />
-          ))}
+          {["fullName", "phone", "street", "city", "state", "zip"].map(
+            (field) => (
+              <input
+                key={field}
+                type="text"
+                placeholder={field}
+                className="border p-2 rounded"
+                value={newAddress[field as keyof typeof newAddress]}
+                onChange={(e) =>
+                  setNewAddress({
+                    ...newAddress,
+                    [field]: e.target.value,
+                  })
+                }
+              />
+            )
+          )}
         </div>
         <button
           onClick={handleAddAddress}

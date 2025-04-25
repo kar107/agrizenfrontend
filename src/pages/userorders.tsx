@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
+import { CreditCard, PackageCheck, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
-import { PackageCheck, Truck, CreditCard } from "lucide-react";
 
 interface ShippingAddress {
   fullName?: string;
@@ -31,7 +31,9 @@ const Orders = () => {
       const parsedUser = JSON.parse(storedUser);
       const uid = parsedUser.userid || parsedUser.user_id;
 
-      fetch(`http://localhost/agrizen/backend/adminController/orderController.php?user_id=${uid}`)
+      fetch(
+        `https://agrigenapi.sarangartstudio.com/adminController/orderController.php?user_id=${uid}`
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.status === 200) {
@@ -73,15 +75,17 @@ const Orders = () => {
           {orders.map((order) => {
             let parsed: ShippingAddress = {};
             try {
-              parsed = JSON.parse(order.shipping_address || '{}');
+              parsed = JSON.parse(order.shipping_address || "{}");
             } catch {
               parsed = {};
             }
 
             const statusColor =
-              order.status === "Completed" ? "bg-green-100 text-green-700" :
-              order.status === "Pending" ? "bg-yellow-100 text-yellow-700" :
-              "bg-gray-100 text-gray-700";
+              order.status === "Completed"
+                ? "bg-green-100 text-green-700"
+                : order.status === "Pending"
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-gray-100 text-gray-700";
 
             return (
               <motion.div
@@ -98,7 +102,9 @@ const Orders = () => {
                       Order #{order.order_id}
                     </h3>
                   </div>
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor}`}
+                  >
                     {order.status}
                   </span>
                 </div>
@@ -107,35 +113,59 @@ const Orders = () => {
                   <div>
                     <p>
                       <strong>Total:</strong> $
-                      {typeof order.total_amount === 'number'
+                      {typeof order.total_amount === "number"
                         ? order.total_amount.toFixed(2)
                         : parseFloat(order.total_amount as any).toFixed(2)}
                     </p>
                     <p className="flex items-center gap-2">
-                      <CreditCard size={16} className="text-gray-500" /> {order.payment_method}
+                      <CreditCard size={16} className="text-gray-500" />{" "}
+                      {order.payment_method}
                     </p>
                     <p className="flex items-center gap-2">
                       <Truck size={16} className="text-gray-500" /> Placed on:{" "}
-                      {new Date(order.created_at).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {new Date(order.created_at).toLocaleDateString(
+                        undefined,
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                     </p>
                   </div>
 
                   <div className="overflow-x-auto break-words">
                     <p className="font-medium mb-1">Shipping Address:</p>
                     <p className="whitespace-pre-line text-sm text-gray-600 leading-relaxed">
-                      {parsed.fullName && <>{parsed.fullName}<br /></>}
-                      {parsed.phone && <>{parsed.phone}<br /></>}
-                      {parsed.street && <>{parsed.street}<br /></>}
+                      {parsed.fullName && (
+                        <>
+                          {parsed.fullName}
+                          <br />
+                        </>
+                      )}
+                      {parsed.phone && (
+                        <>
+                          {parsed.phone}
+                          <br />
+                        </>
+                      )}
+                      {parsed.street && (
+                        <>
+                          {parsed.street}
+                          <br />
+                        </>
+                      )}
                       {parsed.city && parsed.state && parsed.zip && (
-                        <>{parsed.city}, {parsed.state} - {parsed.zip}<br /></>
+                        <>
+                          {parsed.city}, {parsed.state} - {parsed.zip}
+                          <br />
+                        </>
                       )}
                       {parsed.country && <>{parsed.country}</>}
                       {!parsed.fullName && !parsed.street && !parsed.city && (
-                        <span className="text-gray-500 italic">Address not available</span>
+                        <span className="text-gray-500 italic">
+                          Address not available
+                        </span>
                       )}
                     </p>
                   </div>

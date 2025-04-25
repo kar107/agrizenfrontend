@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Product {
   id: number;
@@ -19,7 +19,9 @@ interface Product {
 
 const ProductManagement: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
   const [formData, setFormData] = useState({
     id: null,
     name: "",
@@ -31,13 +33,15 @@ const ProductManagement: React.FC = () => {
     status: "active",
     user_id: null,
     image: null as File | null,
-    existingImage: ""
+    existingImage: "",
   });
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost/agrizen/backend/adminController/productController.php";
-  const CATEGORY_API_URL = "http://localhost/agrizen/backend/adminController/categoryController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/productController.php";
+  const CATEGORY_API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/categoryController.php";
 
   useEffect(() => {
     fetchProducts();
@@ -48,22 +52,24 @@ const ProductManagement: React.FC = () => {
     try {
       const userData = JSON.parse(localStorage.getItem("user") || "{}");
       const userId = userData?.userid || null;
-  
+
       if (!userId) {
         console.error("User ID not found.");
         return;
       }
-  
+
       const response = await axios.get(`${API_URL}?user_id=${userId}`);
-      const filteredProducts = response.data.data.filter((product: Product) => product.user_id === userId);
-  
+      const filteredProducts = response.data.data.filter(
+        (product: Product) => product.user_id === userId
+      );
+
       setProducts(filteredProducts);
     } catch (error) {
       console.error("Error fetching products", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch products. Please check API connection.',
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch products. Please check API connection.",
       });
     }
   };
@@ -77,7 +83,9 @@ const ProductManagement: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -104,7 +112,7 @@ const ProductManagement: React.FC = () => {
     formDataToSend.append("unit", formData.unit);
     formDataToSend.append("status", formData.status);
     formDataToSend.append("user_id", userId?.toString() || "");
-    
+
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
@@ -126,9 +134,11 @@ const ProductManagement: React.FC = () => {
 
       if (response.data.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: editing ? 'Product updated successfully!' : 'Product added successfully!',
+          icon: "success",
+          title: "Success",
+          text: editing
+            ? "Product updated successfully!"
+            : "Product added successfully!",
         });
         fetchProducts();
         setEditing(false);
@@ -143,64 +153,60 @@ const ProductManagement: React.FC = () => {
           status: "active",
           user_id: userId,
           image: null,
-          existingImage: ""
+          existingImage: "",
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: response.data.message || 'Something went wrong!',
+          icon: "error",
+          title: "Error",
+          text: response.data.message || "Something went wrong!",
         });
       }
     } catch (error) {
       console.error("Error processing request:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error processing request. Please try again.',
+        icon: "error",
+        title: "Error",
+        text: "Error processing request. Please try again.",
       });
     }
   };
 
   const handleEdit = (product: Product) => {
-    setFormData({ 
-      ...product, 
+    setFormData({
+      ...product,
       category_id: product.category_id,
       price: product.price,
       stock_quantity: product.stock_quantity,
       image: null,
-      existingImage: product.image || ""
+      existingImage: product.image || "",
     });
     setEditing(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (result.isConfirmed) {
       try {
         await axios.delete(`${API_URL}?id=${id}`);
-        Swal.fire(
-          'Deleted!',
-          'Your product has been deleted.',
-          'success'
-        );
+        Swal.fire("Deleted!", "Your product has been deleted.", "success");
         fetchProducts();
       } catch (error) {
         console.error("Error deleting product", error);
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to delete product',
+          icon: "error",
+          title: "Error",
+          text: "Failed to delete product",
         });
       }
     }
@@ -286,9 +292,9 @@ const ProductManagement: React.FC = () => {
               {editing && formData.existingImage && (
                 <div className="mt-2">
                   <p className="text-sm text-gray-600">Current Image:</p>
-                  <img 
-                    src={`http://localhost/agrizen/backend/uploads/products/${formData.existingImage}`} 
-                    alt="Product" 
+                  <img
+                    src={`https://agrigenapi.sarangartstudio.com/uploads/products/${formData.existingImage}`}
+                    alt="Product"
                     className="h-20 w-20 object-cover mt-1"
                   />
                 </div>
@@ -323,16 +329,18 @@ const ProductManagement: React.FC = () => {
                   <td className="border p-2">{product.id}</td>
                   <td className="border p-2">
                     {product.image && (
-                      <img 
-                        src={`http://localhost/agrizen/backend/uploads/products/${product.image}`} 
-                        alt={product.name} 
+                      <img
+                        src={`https://agrigenapi.sarangartstudio.com/uploads/products/${product.image}`}
+                        alt={product.name}
                         className="h-12 w-12 object-cover"
                       />
                     )}
                   </td>
                   <td className="border p-2">{product.name}</td>
                   <td className="border p-2">${product.price}</td>
-                  <td className="border p-2">{product.stock_quantity} {product.unit}</td>
+                  <td className="border p-2">
+                    {product.stock_quantity} {product.unit}
+                  </td>
                   <td className="border p-2">
                     <button
                       onClick={() => handleEdit(product)}

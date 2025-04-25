@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import DashboardSidebar from "../../components/DashboardSidebar";
 import Swal from "sweetalert2";
+import DashboardSidebar from "../../components/DashboardSidebar";
 
 interface Product {
   id: number;
@@ -19,7 +19,9 @@ interface Product {
 
 const ProductManagement: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    []
+  );
   const [formData, setFormData] = useState<{
     id: number | null;
     name: string;
@@ -52,8 +54,10 @@ const ProductManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const API_URL = "http://localhost/agrizen/backend/adminController/productController.php";
-  const CATEGORY_API_URL = "http://localhost/agrizen/backend/adminController/categoryController.php";
+  const API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/productController.php";
+  const CATEGORY_API_URL =
+    "https://agrigenapi.sarangartstudio.com/adminController/categoryController.php";
 
   useEffect(() => {
     fetchProducts();
@@ -67,9 +71,9 @@ const ProductManagement: React.FC = () => {
     } catch (error) {
       console.error("Error fetching products", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch products. Please check API connection.',
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch products. Please check API connection.",
       });
     }
   };
@@ -81,14 +85,16 @@ const ProductManagement: React.FC = () => {
     } catch (error) {
       console.error("Error fetching categories", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to fetch categories. Please check API connection.',
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch categories. Please check API connection.",
       });
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -130,18 +136,18 @@ const ProductManagement: React.FC = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
         await Swal.fire({
-          icon: 'success',
-          title: 'Updated!',
-          text: 'Product updated successfully.',
+          icon: "success",
+          title: "Updated!",
+          text: "Product updated successfully.",
         });
       } else {
         response = await axios.post(API_URL, formDataToSend, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         await Swal.fire({
-          icon: 'success',
-          title: 'Added!',
-          text: 'Product added successfully.',
+          icon: "success",
+          title: "Added!",
+          text: "Product added successfully.",
         });
       }
 
@@ -163,17 +169,17 @@ const ProductManagement: React.FC = () => {
         });
       } else {
         await Swal.fire({
-          icon: 'error',
-          title: 'Error',
+          icon: "error",
+          title: "Error",
           text: response.data.message,
         });
       }
     } catch (error) {
       console.error("Error processing request:", error);
       await Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Error processing request. Please try again.',
+        icon: "error",
+        title: "Error",
+        text: "Error processing request. Please try again.",
       });
     }
   };
@@ -192,23 +198,27 @@ const ProductManagement: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
     });
 
     if (result.isConfirmed) {
       try {
         await axios.delete(`${API_URL}?id=${id}`);
         fetchProducts();
-        Swal.fire('Deleted!', 'The product has been deleted.', 'success');
+        Swal.fire("Deleted!", "The product has been deleted.", "success");
       } catch (error) {
         console.error("Error deleting product", error);
-        Swal.fire('Error!', 'There was an error deleting the product.', 'error');
+        Swal.fire(
+          "Error!",
+          "There was an error deleting the product.",
+          "error"
+        );
       }
     }
   };
@@ -216,7 +226,10 @@ const ProductManagement: React.FC = () => {
   // Pagination logic
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -256,7 +269,9 @@ const ProductManagement: React.FC = () => {
             >
               <option value="">Select Category</option>
               {categories.map((category) => (
-                <option key={category.id} value={category.id}>{category.name}</option>
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
               ))}
             </select>
             <input
@@ -299,7 +314,7 @@ const ProductManagement: React.FC = () => {
                 <div className="mt-2">
                   <p className="text-sm text-gray-600">Current Image:</p>
                   <img
-                    src={`http://localhost/agrizen/backend/uploads/products/${formData.existingImage}`}
+                    src={`https://agrigenapi.sarangartstudio.com/uploads/products/${formData.existingImage}`}
                     alt="Product"
                     className="h-20 w-20 object-cover mt-1"
                   />
@@ -336,7 +351,7 @@ const ProductManagement: React.FC = () => {
                   <td className="border p-2">
                     {product.image && (
                       <img
-                        src={`http://localhost/agrizen/backend/uploads/products/${product.image}`}
+                        src={`https://agrigenapi.sarangartstudio.com/uploads/products/${product.image}`}
                         alt={product.name}
                         className="h-12 w-12 object-cover"
                       />
@@ -371,7 +386,9 @@ const ProductManagement: React.FC = () => {
             <button
               onClick={() => paginate(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-3 py-1 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+              className={`px-3 py-1 rounded ${
+                currentPage === 1 ? "bg-gray-300" : "bg-blue-500 text-white"
+              }`}
             >
               Previous
             </button>
@@ -380,7 +397,11 @@ const ProductManagement: React.FC = () => {
               <button
                 key={page}
                 onClick={() => paginate(page)}
-                className={`px-3 py-1 rounded ${currentPage === page ? 'bg-blue-700 text-white' : 'bg-blue-200'}`}
+                className={`px-3 py-1 rounded ${
+                  currentPage === page
+                    ? "bg-blue-700 text-white"
+                    : "bg-blue-200"
+                }`}
               >
                 {page}
               </button>
@@ -389,7 +410,11 @@ const ProductManagement: React.FC = () => {
             <button
               onClick={() => paginate(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+              className={`px-3 py-1 rounded ${
+                currentPage === totalPages
+                  ? "bg-gray-300"
+                  : "bg-blue-500 text-white"
+              }`}
             >
               Next
             </button>
